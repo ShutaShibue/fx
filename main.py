@@ -2,7 +2,12 @@ import MetaTrader5 as mt5
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+from datetime import datetime
+import matplotlib.pyplot as plt
+import pandas as pd
+from pandas.plotting import register_matplotlib_converters
 
+register_matplotlib_converters()
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
@@ -22,5 +27,10 @@ print(mt5.terminal_info())
 # MetaTrader 5バージョンについてのデータを表示する
 print(mt5.version())
  
-# MetaTrader 5ターミナルへの接続をシャットダウンする
+rates = mt5.copy_rates_from("USDJPY", mt5.TIMEFRAME_D1, datetime(2022,1,28,13), 200)
 mt5.shutdown()
+
+rates_frame = pd.DataFrame(rates)
+rates_frame['time']=pd.to_datetime(rates_frame['time'], unit='s')
+
+print(rates_frame)  
