@@ -6,6 +6,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+import mplfinance as mpf
 
 
 register_matplotlib_converters()
@@ -28,10 +29,11 @@ print(mt5.terminal_info())
 # MetaTrader 5バージョンについてのデータを表示する
 print(mt5.version())
  
-rates = mt5.copy_rates_from("USDJPY", mt5.TIMEFRAME_D1, datetime(2022,1,28,13), 200)
+rates = mt5.copy_rates_from("USDJPY", mt5.TIMEFRAME_D1, datetime(2022,8,5), 200)
 mt5.shutdown()
 
-rates_frame = pd.DataFrame(rates)
-rates_frame['time']=pd.to_datetime(rates_frame['time'], unit='s')
+df = pd.DataFrame(rates)
+df['time']=pd.to_datetime(df['time'], unit='s')
 
-print(rates_frame)
+df.set_index('time', inplace = True)
+mpf.plot(df, type='candle', style="yahoo")
