@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
+
 register_matplotlib_converters()
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -33,4 +34,4 @@ mt5.shutdown()
 rates_frame = pd.DataFrame(rates)
 rates_frame['time']=pd.to_datetime(rates_frame['time'], unit='s')
 
-print(rates_frame)  
+print(rates_frame)
